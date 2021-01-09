@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const url = 'https://memoriees-app.herokuapp.com';
-//onst url = 'http://localhost:5000';
+//const url = 'https://memoriees-app.herokuapp.com';
+const url = 'http://localhost:5000';
 
 
 export const FetchPosts = (config) => axios.get(url+"/posts",config);
@@ -13,4 +13,4 @@ export const likePost = (id,config) => axios.patch(`${url}/posts/${id}/likePost`
 
 export const getUser = (config) => axios.get(url+"/users/getUserByToken",config);
 export const loginfn = (body,config) => axios.post(`${url}/users/login`, body, config);
-export const registerfn = (body) => axios.post(`${url}/users/register`, body);
+export const registerfn = (body,config) => axios.post(`${url}/users/register`, body,config);

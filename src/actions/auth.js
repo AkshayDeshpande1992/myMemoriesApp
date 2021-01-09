@@ -1,5 +1,5 @@
 import { USER_LOADED,USER_LOADING,REGISTER_FAIL,REGISTER_SUCCESS,LOGIN_FAIL,LOGIN_SUCCESS,LOGOUT_SUCCESS,AUTH_ERROR } from '../constants/actionTypes';
-import { getUser,loginfn } from '../api/index'
+import { getUser,loginfn,registerfn } from '../api/index'
 import {returnErrors} from './errors'
 import axios from 'axios';
 export const loadUser = () => (dispatch,getState) => {
@@ -28,9 +28,7 @@ export const register = ({ name, email, password }) => (dispatch) => {
     // Request body
     const body = JSON.stringify({ name, email, password });
   
-    axios
-      .post('/api/auth/register', body, config)
-      .then(res =>
+    registerfn(body,config).then(res =>
         dispatch({
           type: REGISTER_SUCCESS,
           payload: res.data

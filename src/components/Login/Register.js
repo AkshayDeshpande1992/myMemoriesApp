@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import { createStyles, makeStyles, theme } from '@material-ui/core/styles';
 import {Link,Typography} from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +9,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
 
-import { login } from '../../actions/auth';
+import { register } from '../../actions/auth';
 import { useHistory } from 'react-router-dom';
 import { getPosts } from '../../actions/posts';
 
@@ -40,15 +40,18 @@ const useStyles = makeStyles((theme) =>
 );
 
 
-const Register = () => {
+const Register = (error) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState(null);
 
+  const handleChangeName = (e) => setName(e.target.value);
   const handleChangeEmail = (e) => setEmail(e.target.value);
   const handleChangePassword = (e) => setPassword(e.target.value);
+  
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const authUser = useSelector((state)=>state.auth.user);
   const history = useHistory();
@@ -64,10 +67,10 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const user = { email, password };
+    const user = { name,email,password };
 
     // Attempt to login
-    dispatch(login(user));
+    dispatch(register(user));
     
   };
 
@@ -84,7 +87,7 @@ const Register = () => {
               type="name"
               label="Name"
               margin="normal"
-              onChange={handleChangeEmail}
+              onChange={handleChangeName}
             />
             <TextField
               fullWidth
