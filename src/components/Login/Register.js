@@ -58,7 +58,7 @@ const Register = (error) => {
 
   useEffect(()=>{
     if(isAuthenticated) {
-      history.push(`/`);
+      history.push(`/login`);
       const userid = authUser.user.id;
       dispatch(getPosts())
     }
