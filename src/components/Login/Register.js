@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 
-const Register = (error) => {
+const Register = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
