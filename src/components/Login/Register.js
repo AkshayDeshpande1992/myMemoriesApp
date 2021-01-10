@@ -96,7 +96,9 @@ const Register = (error) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(errors.length===0){
+    const isEmpty = Object.values(errors).some(x => (x !== null && x !== ""));
+    //console.log(isEmpty);
+    if(!isEmpty){
     const user = { name,email,password };
 
     // Attempt to login
