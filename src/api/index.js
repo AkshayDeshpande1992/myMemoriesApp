@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const url = 'https://memoriees-app.herokuapp.com';
-//const url = 'http://localhost:5000';
+//const url = 'https://memoriees-app.herokuapp.com';
+const url = 'http://localhost:5000';
 
 
 export const FetchPosts = (config) => axios.get(url+"/posts",config);

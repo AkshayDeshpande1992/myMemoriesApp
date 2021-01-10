@@ -46,9 +46,42 @@ const Login = (error) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState(null);
+  const [errors, setErrors] = useState({});
 
-  const handleChangeEmail = (e) => setEmail(e.target.value);
-  const handleChangePassword = (e) => setPassword(e.target.value);
+  const handleChangeEmail = (e) => {
+    if(e.target.value.length !== 0){
+      setEmail(e.target.value);
+      setErrors({...errors,email:""});
+    }
+    else{
+      setErrors({...errors,email:"Email is required"});
+    }
+
+  };
+  const handleChangePassword = (e) => {
+    if(e.target.value.length !== 0){
+      setPassword(e.target.value)
+      setErrors({...errors,password:""})
+    }
+    else
+    {
+      setErrors({...errors,password:"Password is required"});
+    }
+  };
+
+  // This is one way to do this defining a object with email and password props and keeping one common change function and setting th
+  // values of all those props like [e.target.name] : e.target.value
+
+  // const change = e =>{
+  //   if(e.target.value.length !== 0){
+  //     setPassword(e.target.value)
+  //     setErrors({...errors,password:""})
+  //   }
+  //   else
+  //   {
+  //     setErrors({...errors,password:"Password is required"});
+  //   }
+  // }
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const authUser = useSelector((state)=>state.auth.user);
   const history = useHistory();
@@ -64,16 +97,20 @@ const Login = (error) => {
   const handleLogin = (e) => {
     e.preventDefault();
 
+    const isEmpty = Object.values(errors).some(x => (x !== null && x !== ""));
+    //console.log(isEmpty);
+    if(!isEmpty){
     const user = { email, password };
 
     // Attempt to login
     dispatch(login(user));
+    }
     
   };
 
  
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form name="loginform" className={classes.container} noValidate autoComplete="off" onSubmit={handleLogin}>
       <Card className={classes.card}>
         <CardHeader className={classes.header} title="Login to your Memories!!" />
         <CardContent>
@@ -85,25 +122,28 @@ const Login = (error) => {
               label="Email"
               margin="normal"
               onChange={handleChangeEmail}
+              error ={Boolean(errors?.email)}
+              helperText={errors?.email}
             />
             <TextField
               fullWidth
               id="password"
+              name="password"
               type="password"
               label="Password"
               margin="normal"
               onChange={handleChangePassword}
+              error ={Boolean(errors?.password)}
+              helperText={errors?.password}
             />
           </div>
         </CardContent>
         <CardActions>
-          <Button
+          <Button type="submit"
             variant="contained"
             size="large"
             color="secondary"
-            className={classes.loginBtn}
-            onClick={handleLogin}
-            >
+            className={classes.loginBtn}>
             Login
           </Button>
         </CardActions>

@@ -47,10 +47,39 @@ const Register = (error) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState(null);
+  const [errors, setErrors] = useState({});
 
-  const handleChangeName = (e) => setName(e.target.value);
-  const handleChangeEmail = (e) => setEmail(e.target.value);
-  const handleChangePassword = (e) => setPassword(e.target.value);
+  const handleChangeName = (e) => {
+    if(e.target.value.length !== 0){
+      setName(e.target.value);
+      setErrors({...errors,name:""});
+    }
+    else{
+      setErrors({...errors,name:"Name is required"});
+    }
+
+  };
+  
+  const handleChangeEmail = (e) => {
+    if(e.target.value.length !== 0){
+      setEmail(e.target.value);
+      setErrors({...errors,email:""});
+    }
+    else{
+      setErrors({...errors,email:"Email is required"});
+    }
+
+  };
+  const handleChangePassword = (e) => {
+    if(e.target.value.length !== 0){
+      setPassword(e.target.value)
+      setErrors({...errors,password:""})
+    }
+    else
+    {
+      setErrors({...errors,password:"Password is required"});
+    }
+  };
   
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const authUser = useSelector((state)=>state.auth.user);
@@ -67,16 +96,18 @@ const Register = (error) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if(errors.length===0){
     const user = { name,email,password };
 
     // Attempt to login
     dispatch(register(user));
+    }
     
   };
 
  
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form className={classes.container} noValidate autoComplete="off" onSubmit={handleSubmit}>
       <Card className={classes.card}>
         <CardHeader className={classes.header} title="Register" />
         <CardContent>
@@ -88,6 +119,8 @@ const Register = (error) => {
               label="Name"
               margin="normal"
               onChange={handleChangeName}
+              error ={Boolean(errors?.name)}
+              helperText={errors?.name}
             />
             <TextField
               fullWidth
@@ -96,6 +129,8 @@ const Register = (error) => {
               label="Email"
               margin="normal"
               onChange={handleChangeEmail}
+              error ={Boolean(errors?.email)}
+              helperText={errors?.email}
             />
             <TextField
               fullWidth
@@ -104,17 +139,17 @@ const Register = (error) => {
               label="Password"
               margin="normal"
               onChange={handleChangePassword}
+              error ={Boolean(errors?.password)}
+              helperText={errors?.password}
             />
           </div>
         </CardContent>
         <CardActions>
-          <Button
+          <Button type="submit"
             variant="contained"
             size="large"
             color="secondary"
-            className={classes.loginBtn}
-            onClick={handleSubmit}
-            >
+            className={classes.loginBtn}>
             Register
           </Button>
         </CardActions>
