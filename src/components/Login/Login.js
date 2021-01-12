@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import { login } from '../../actions/auth';
 import { useHistory } from 'react-router-dom';
 import { getPosts } from '../../actions/posts';
+import AlertMessage from '../../common/AlertMessage'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -40,13 +41,14 @@ const useStyles = makeStyles((theme) =>
 );
 
 
-const Login = (error) => {
+const Login = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState(null);
   const [errors, setErrors] = useState({});
+  const [status, setStatusBase] = useState("");
 
   const handleChangeEmail = (e) => {
     if(e.target.value.length !== 0){
@@ -84,6 +86,7 @@ const Login = (error) => {
   // }
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const authUser = useSelector((state)=>state.auth.user);
+  const error = useSelector((state)=>state.error.msg);
   const history = useHistory();
 
   useEffect(()=>{
@@ -91,8 +94,16 @@ const Login = (error) => {
       history.push(`/`);
       const userid = authUser.user.id;
       dispatch(getPosts())
+      
     }
   },[isAuthenticated])
+
+  useEffect(()=>{
+    if(error?.msg){
+      setStatusBase({ msg: error?.msg, key: Math.random() });
+      //setMsg("");
+    }
+  },[error]); 
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -101,15 +112,15 @@ const Login = (error) => {
     //console.log(isEmpty);
     if(!isEmpty){
     const user = { email, password };
-
-    // Attempt to login
     dispatch(login(user));
+    // Attempt to login
     }
     
   };
 
  
   return (
+    <>
     <form name="loginform" className={classes.container} noValidate autoComplete="off" onSubmit={handleLogin}>
       <Card className={classes.card}>
         <CardHeader className={classes.header} title="Login to your Memories!!" />
@@ -150,6 +161,8 @@ const Login = (error) => {
         <Typography variant="subtitle2" className={classes.link}>Need a new account, <Link href="/register">sign up</Link></Typography>
       </Card>
     </form>
+    {status ? <AlertMessage key={status.key} message={status.msg} /> : null}
+    </>
   );
 }
 

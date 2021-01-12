@@ -17,12 +17,6 @@ const Posts = ({ setCurrentId }) => {
   //   }
   // },[])
   const classes = useStyles();
-  if(posts && posts.length===0)
-  {
-    return(<><Typography variant="h6" style={{"font-weight": "bold"}} color="textSecondary">No Memories created yet, create one?</Typography></>)
-  }
-  else
-  {
     return (
       !posts.length ? <CircularProgress /> :(
         <>
@@ -36,7 +30,6 @@ const Posts = ({ setCurrentId }) => {
         </>
       )
     );
-  }
-};
+  };
 
 export default Posts;

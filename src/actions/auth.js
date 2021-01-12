@@ -1,6 +1,6 @@
 import { USER_LOADED,USER_LOADING,REGISTER_FAIL,REGISTER_SUCCESS,LOGIN_FAIL,LOGIN_SUCCESS,LOGOUT_SUCCESS,AUTH_ERROR } from '../constants/actionTypes';
 import { getUser,loginfn,registerfn } from '../api/index'
-import {returnErrors} from './errors'
+import {returnErrors,clearErrors} from './errors'
 import axios from 'axios';
 export const loadUser = () => (dispatch,getState) => {
     
@@ -28,12 +28,13 @@ export const register = ({ name, email, password }) => (dispatch) => {
     // Request body
     const body = JSON.stringify({ name, email, password });
   
-    registerfn(body,config).then(res =>
+    registerfn(body,config).then(res =>{
         dispatch({
           type: REGISTER_SUCCESS,
           payload: res.data
-        })
-      )
+        });
+        dispatch(clearErrors());
+      })
       .catch(err => {
         dispatch(
           returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL')
@@ -57,19 +58,21 @@ export const login = ({ email, password }) => (dispatch) => {
     const body = JSON.stringify({ email, password });
   
     //axios.post('http://localhost:5000/users/login', body, config)
-    loginfn(body,config).then(res =>
+    loginfn(body,config).then(res =>{
         dispatch({
           type: LOGIN_SUCCESS,
           payload: res.data
-        })
+        });
+        dispatch(clearErrors())
+      }
       )
       .catch(err => {
-        // dispatch(
-        //   returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL')
-        // );
-        dispatch({
-          type: LOGIN_FAIL
-        });
+        dispatch(
+          returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL')
+        );
+        // dispatch({
+        //   type: LOGIN_FAIL
+        // });
       });
   };
 

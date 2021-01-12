@@ -13,6 +13,8 @@ import { register } from '../../actions/auth';
 import { useHistory } from 'react-router-dom';
 import { getPosts } from '../../actions/posts';
 
+import AlertMessage from '../../common/AlertMessage'
+
 const useStyles = makeStyles((theme) =>
   createStyles({
     container: {
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 
-const Register = (error) => {
+const Register = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [name, setName] = useState('');
@@ -48,6 +50,7 @@ const Register = (error) => {
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState(null);
   const [errors, setErrors] = useState({});
+  const [status, setStatusBase] = useState("");
 
   const handleChangeName = (e) => {
     if(e.target.value.length !== 0){
@@ -83,15 +86,21 @@ const Register = (error) => {
   
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const authUser = useSelector((state)=>state.auth.user);
+  const error = useSelector((state)=>state.error.msg);
   const history = useHistory();
 
   useEffect(()=>{
     if(isAuthenticated) {
       history.push(`/login`);
-      const userid = authUser.user.id;
-      dispatch(getPosts())
     }
   },[isAuthenticated])
+
+  useEffect(()=>{
+    if(error?.msg){
+      setStatusBase({ msg: error?.msg, key: Math.random() });
+      //setMsg("");
+    }
+  },[error]); 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -109,6 +118,7 @@ const Register = (error) => {
 
  
   return (
+    <>
     <form className={classes.container} noValidate autoComplete="off" onSubmit={handleSubmit}>
       <Card className={classes.card}>
         <CardHeader className={classes.header} title="Register" />
@@ -158,6 +168,8 @@ const Register = (error) => {
         <Typography variant="subtitle2" className={classes.link}>Already have an account, <Link href="/login">login</Link></Typography>
       </Card>
     </form>
+    {status ? <AlertMessage key={status.key} message={status.msg} /> : null}
+    </>
   );
 }
 
