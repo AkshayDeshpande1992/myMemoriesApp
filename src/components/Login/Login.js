@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
+import { getUsers } from '../../actions/users';
 
 import { login } from '../../actions/auth';
 import { useHistory } from 'react-router-dom';
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 
-const Login = () => {
+const Login = (getState) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -94,7 +95,8 @@ const Login = () => {
     if(isAuthenticated) {
       history.push(`/`);
       const userid = authUser.user.id;
-      dispatch(getPosts())
+      dispatch(getPosts());
+      dispatch(getUsers(getState));
       
     }
   },[isAuthenticated])

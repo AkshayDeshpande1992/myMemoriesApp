@@ -1,7 +1,7 @@
 import { USER_LOADED,USER_LOADING,REGISTER_FAIL,REGISTER_SUCCESS,LOGIN_FAIL,LOGIN_SUCCESS,LOGOUT_SUCCESS,AUTH_ERROR } from '../constants/actionTypes';
 import { getUser,loginfn,registerfn } from '../api/index'
 import {returnErrors,clearErrors} from './errors'
-import axios from 'axios';
+
 export const loadUser = () => (dispatch,getState) => {
     
     dispatch({type: USER_LOADING});
@@ -81,6 +81,7 @@ export const logout = (dispatch) => {
       type: LOGOUT_SUCCESS
     });
   };
+
 
 export const tokenConfig = getState => {
     const token = getState().auth.token; 

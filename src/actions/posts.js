@@ -1,5 +1,5 @@
 import * as api from '../api';
-import { FETCH_ALL, CREATE, UPDATE, DELETE, LIKE } from '../constants/actionTypes';
+import { FETCH_ALL, CREATE, UPDATE, DELETE, LIKE,FETCH_BY_USER } from '../constants/actionTypes';
 import {tokenConfig} from './auth'
 
 
@@ -11,6 +11,16 @@ export const getPosts = () => async(dispatch,getState) => {
     } catch (error) {
         console.log(error.message);
     }
+}
+
+export const getPostsByUser = (id) => async(dispatch,getState) => {
+  try {
+      const {data} = await api.FetchPostsByUser(id,tokenConfig(getState));
+      const action = {type:FETCH_BY_USER,payload:data};
+      dispatch(action);
+  } catch (error) {
+      console.log(error.message);
+  }
 }
 
 export const createPost = (post) => async(dispatch,getState) => {

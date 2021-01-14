@@ -14,3 +14,7 @@ export const likePost = (id,config) => axios.patch(`${url}/posts/${id}/likePost`
 export const getUser = (config) => axios.get(url+"/users/getUserByToken",config);
 export const loginfn = (body,config) => axios.post(`${url}/users/login`, body, config);
 export const registerfn = (body,config) => axios.post(`${url}/users/register`, body,config);
+
+export const FetchUsers = (config) => axios.get(url+"/users/getAllUsers",config);
+export const FetchPostsByUser = (id,config) => axios.get(`${url}/posts/getPostByUser/${id}`,config);
+
