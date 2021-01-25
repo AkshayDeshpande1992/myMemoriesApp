@@ -1,5 +1,5 @@
 import * as api from '../api';
-import { FETCH_ALL, CREATE, UPDATE, DELETE, LIKE,FETCH_BY_USER } from '../constants/actionTypes';
+import { FETCH_ALL, CREATE, UPDATE, DELETE, LIKE,FETCH_BY_USER,CLEAR_POSTS } from '../constants/actionTypes';
 import {tokenConfig} from './auth'
 
 
@@ -43,6 +43,15 @@ export const updatePost = (id,post) => async(dispatch,getState) => {
     }
 }
 
+export const clearPosts = () => async (dispatch) =>{
+  try {
+    const action = {type:CLEAR_POSTS};
+    dispatch(action);
+} catch (error) {
+    console.log(error.message);
+}
+}
+
 export const likePost = (id) => async (dispatch,getState) => {
     try {
       const { data } = await api.likePost(id,tokenConfig(getState));
@@ -55,7 +64,7 @@ export const likePost = (id) => async (dispatch,getState) => {
   
   export const deletePost = (id) => async (dispatch,getState) => {
     try {
-      await await api.deletePost(id,tokenConfig(getState));
+      await api.deletePost(id,tokenConfig(getState));
   
       dispatch({ type: DELETE, payload: id });
     } catch (error) {

@@ -18,3 +18,4 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 export const GET_USERS = 'GET_USERS';
 export const FETCH_BY_USER = 'FETCH_BY_USER';
+export const CLEAR_POSTS = 'CLEAR_POSTS';

@@ -4,7 +4,7 @@ import { useDispatch,useSelector } from 'react-redux';
 
 import Posts from './components/Posts/Posts';
 import Form from './components/Form/Form';
-import { getPosts,getPostsByUser } from './actions/posts';
+import { getPosts,getPostsByUser,clearPosts } from './actions/posts';
 import { getUsers } from './actions/users';
 import useStyles from './styles';
 import memories from './images/memories.png';
@@ -43,6 +43,7 @@ const App = (getState) => {
   useEffect(() => {
     if(option!=null){
       setTitleText(option.name);
+      dispatch(clearPosts());
       dispatch(getPostsByUser(option._id,getState));  
     }
   },[option])
@@ -89,7 +90,7 @@ const App = (getState) => {
           >
             <MenuIcon />
           </IconButton> */}
-          {otherUserProfile && <HomeIcon  onClick={()=>{setOtherUserProfile(false); dispatch(getPosts(getState));}} className={classes.menuButton}></HomeIcon>}
+          {otherUserProfile && <HomeIcon  onClick={()=>{setOtherUserProfile(false);dispatch(clearPosts()); dispatch(getPosts(getState));}} className={classes.menuButton}></HomeIcon>}
           <Typography className={classes.title} variant="h6" noWrap>
             {!otherUserProfile && <a>My Memories</a>}
             {otherUserProfile && <a>{titleText}'s Memories</a>}
